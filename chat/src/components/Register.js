@@ -11,13 +11,10 @@ function Register({ history }) {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/users/register`,
-        {
-          name,
-          password,
-        }
-      );
+      const response = await axios.post(`/api/users/register`, {
+        name,
+        password,
+      });
       history.push("/login");
     } catch (error) {
       console.log(error);

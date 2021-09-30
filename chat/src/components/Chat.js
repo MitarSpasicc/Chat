@@ -22,9 +22,7 @@ function Chat({ history }) {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/conversation/${userInfo.id}`
-        );
+        const res = await axios.get(`/api/conversation/${userInfo.id}`);
         setConversations(res.data);
       } catch (error) {
         console.log(error);

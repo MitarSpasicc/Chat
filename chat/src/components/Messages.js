@@ -20,9 +20,7 @@ function Messages({ loggedInUser, currentChat }) {
     let friendId = currentChat.members.filter((m) => m !== loggedInUser.id);
     const getChatUser = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/users/${friendId}`
-        );
+        const res = await axios.get(`/api/users/${friendId}`);
         setCurrentChatFriend(res.data);
       } catch (error) {
         console.log(error);
@@ -70,10 +68,7 @@ function Messages({ loggedInUser, currentChat }) {
     );
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/messages",
-        message
-      );
+      const response = await axios.post("/api/messages", message);
       setMessages([...messages, response.data]);
       setNewMessage("");
     } catch (err) {
@@ -91,9 +86,7 @@ function Messages({ loggedInUser, currentChat }) {
     const getMessages = async () => {
       try {
         if (currentChat) {
-          const response = await axios.get(
-            `http://localhost:5000/api/messages/${currentChat._id}`
-          );
+          const response = await axios.get(`/api/messages/${currentChat._id}`);
           console.log(response.data);
           setMessages(response.data);
         }

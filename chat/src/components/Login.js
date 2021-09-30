@@ -18,13 +18,10 @@ function Login({ history }) {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/users/login`,
-        {
-          name,
-          password,
-        }
-      );
+      const response = await axios.post(`/api/users/login`, {
+        name,
+        password,
+      });
       localStorage.setItem("userInfo", JSON.stringify(response.data));
       history.push("/chat");
     } catch (error) {

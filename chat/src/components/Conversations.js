@@ -8,7 +8,7 @@ function Conversations({ conversation, currentUser }) {
 
   const handleDelete = async (e, id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/conversation/${id}`);
+      await axios.delete(`/api/conversation/${id}`);
       e.target.parentElement.parentElement.remove();
     } catch (error) {
       console.log(error);

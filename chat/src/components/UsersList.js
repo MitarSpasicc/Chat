@@ -8,7 +8,7 @@ function UsersList() {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users");
+        const response = await axios.get("/api/users");
         setUsers(response.data.filter((user) => user._id !== userInfo.id));
       } catch (error) {
         console.log(error);
@@ -24,10 +24,7 @@ function UsersList() {
         receiverId: user._id,
       };
       localStorage.setItem("conversations", JSON.stringify(""));
-      await axios.post(
-        `http://localhost:5000/api/conversation`,
-        newConversation
-      );
+      await axios.post(`/api/conversation`, newConversation);
     } catch (error) {
       console.log(error);
     }
