@@ -40,6 +40,18 @@ mongoose.connect(
   }
 );
 
+app.use("/api/users", userRoutes);
+app.use("/api/conversation", conversationRoutes);
+app.use("/api/messages", messageRoutes);
+app.use(errorHandler);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("./chat/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve("./", "chat", "build", "index.html"));
+  });
+}
+
 // SOCKET
 
 let users = [];
@@ -84,15 +96,3 @@ server.listen(
 );
 
 // ROUTES
-
-app.use("/api/users", userRoutes);
-app.use("/api/conversation", conversationRoutes);
-app.use("/api/messages", messageRoutes);
-app.use(errorHandler);
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("./chat/build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve("./", "chat", "build", "index.html"));
-  });
-}
