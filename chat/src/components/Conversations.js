@@ -20,9 +20,7 @@ function Conversations({ conversation, currentUser }) {
       const friendId = conversation.members.find((m) => m !== currentUser.id);
       const getUser = async () => {
         try {
-          const res = await axios.get(
-            `http://localhost:5000/api/users/${friendId}`
-          );
+          const res = await axios.get(`/api/users/${friendId}`);
           setUser(res.data);
         } catch (error) {
           console.log(error);
@@ -36,9 +34,7 @@ function Conversations({ conversation, currentUser }) {
     if (conversation) {
       let getLatestMessage = async () => {
         try {
-          const { data } = await axios.get(
-            `http://localhost:5000/api/messages/${conversation._id}`
-          );
+          const { data } = await axios.get(`/api/messages/${conversation._id}`);
           setLatestMessage(data[data.length - 1].text);
         } catch (error) {
           console.log(error);
