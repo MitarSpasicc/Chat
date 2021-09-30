@@ -1,0 +1,69 @@
+.conversations-container {
+  overflow-y: auto;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.conversation {
+  display: flex;
+  border-radius: 5px;
+  box-shadow: 6px 8px 10px 1px rgba(0, 0, 0, 0.14);
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 2rem 1rem;
+  margin: 0 0 2rem 0;
+}
+
+.conversation:hover {
+  cursor: pointer;
+  background-color: #ffffff;
+  border-bottom: 3px solid #44d7b6;
+}
+
+.con-avatar {
+  align-self: center;
+}
+
+.con-info {
+  align-self: center;
+  flex: 2;
+  margin-left: 10px;
+}
+
+.con_name {
+  color: #1d2033;
+  font-weight: 600;
+}
+
+.con-about {
+  align-self: center;
+}
+
+.con-add-friend {
+  align-self: center;
+  color: #44d7b6;
+  font-size: 20px;
+}
+
+.fa-trash-alt {
+  align-self: flex-end;
+  font-size: 18px;
+  color: red;
+}
+
+.con_time {
+  align-self: flex-start;
+  color: #cccdd1;
+  font-size: 14px;
+}
+
+.img-container-conversation {
+  width: 60px;
+}
+
+.fa-user-tie {
+  font-size: 40px;
+  color: #afafaf;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "chat application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node api/server",
+    "server": "nodemon api/server",
+    "client": "npm start --prefix chat",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix chat && npm run build --prefix chat"
+  },
+  "author": "Mitar",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "mongoose": "^5.13.8",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12",
+    "socket.io": "^4.2.0"
+  }
+}

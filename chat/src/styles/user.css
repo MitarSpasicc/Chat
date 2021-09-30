@@ -1,0 +1,33 @@
+.right-top {
+  flex: 3;
+}
+
+.right-image-container img {
+  width: 50px;
+}
+
+.right-icons .active {
+  color: #44d7b6;
+}
+
+.right-icons {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.right-icons i {
+  font-size: 26px;
+  color: #afafaf;
+}
+
+.right-icons .fa-sign-out-alt {
+  color: rgb(214, 36, 36);
+  cursor: pointer;
+}
+
+.fa-user-astronaut {
+  color: #44d7b6;
+  font-size: 50px;
+}

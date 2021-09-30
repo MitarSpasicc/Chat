@@ -1,0 +1,113 @@
+.left {
+  grid-area: left;
+  display: grid;
+  grid-template-rows: auto minmax(auto, 80%);
+  background-color: #f6f6f6;
+  padding: 1rem 1.5rem;
+  order: 2;
+  min-height: 90vh;
+}
+
+.center {
+  grid-area: center;
+  background-color: #ffffff;
+  order: 3;
+  display: grid;
+  grid: auto minmax(auto, 85%) auto / 1fr;
+  min-height: 90vh;
+  padding: 1rem 1.5rem;
+  border-radius: 0 15px 15px 0;
+}
+
+.right {
+  grid-area: right;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+  background-color: #181818;
+  border-radius: 15px 0 0 15px;
+}
+
+@media only screen and (max-width: 1225px) {
+  .container {
+    height: 100vh;
+    width: 100vw;
+    grid-template-columns: 1.5fr 3fr;
+    grid-template-areas:
+      "right right right"
+      "left center center";
+    grid-template-rows: 9vh 91vh;
+  }
+
+  .left .conversation {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .left .con-info {
+    margin-left: 0;
+  }
+
+  .right {
+    flex-direction: row;
+    padding: 1rem 1.5rem;
+    border-radius: 0;
+  }
+
+  .right .right-top {
+    flex: 2;
+    display: flex;
+    align-items: center;
+  }
+
+  .center {
+    border-radius: 0;
+  }
+
+  .right .fa-user-astronaut {
+    font-size: 40px;
+  }
+
+  .right .right-icons {
+    flex-direction: row;
+  }
+}
+
+@media only screen and (min-height: 966px) and (max-width: 1024px) {
+  .container {
+    grid-template-rows: 7vh 93vh;
+  }
+
+  .left {
+    grid-template-rows: minmax(auto, 15%) minmax(auto, 80%);
+  }
+
+  .center {
+    grid: minmax(auto, 6%) minmax(auto, 88%) auto / 1fr;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    grid-template-areas:
+      "right right right"
+      "left left left";
+    grid-template-rows: 9vh 91vh;
+  }
+
+  .center {
+    display: none;
+  }
+
+  .right {
+    flex-direction: row;
+    border-radius: 0;
+  }
+
+  .right .right-icons i {
+    font-size: 20px;
+  }
+}

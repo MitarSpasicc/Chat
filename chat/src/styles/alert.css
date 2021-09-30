@@ -1,0 +1,10 @@
+.alert-container {
+  background-color: rgb(211, 32, 32);
+  position: absolute;
+  top: 0.5rem;
+}
+
+.alert_message {
+  color: white;
+  padding: 0.5rem;
+}
