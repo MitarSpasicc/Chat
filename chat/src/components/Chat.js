@@ -26,7 +26,6 @@ function Chat({ history }) {
           `http://localhost:5000/api/conversation/${userInfo.id}`
         );
         setConversations(res.data);
-        console.log(conversation);
       } catch (error) {
         console.log(error);
       }
