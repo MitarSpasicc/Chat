@@ -1,3 +1,3 @@
 # Chat
 Chat application
-Chat application made with React on the frontend and Node, MongoDB, SocketIO on the backend.
+Chat application made with React on the front and Node, MongoDB, SocketIO on the back.
