@@ -1,33 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 import "../styles/messages.css";
-
+import socket from "./socket-client";
 function Messages({ loggedInUser, currentChat }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentChatFriend, setCurrentChatFriend] = useState(null);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
-
-  const socket = useRef();
+  const [arrivalMessage, setArrivalMessage] = useState("");
   const scrollRef = useRef();
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
+    socket.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
   }, []);
 
   useEffect(() => {
-    let friendId = currentChat.members.filter((m) => m !== loggedInUser.id);
+    let friendId = currentChat.members.find((m) => m._id !== loggedInUser.id);
     const getChatUser = async () => {
       try {
-        const res = await axios.get(`/api/users/${friendId}`);
+        const res = await axios.get(`/api/users/${friendId._id}`);
         setCurrentChatFriend(res.data);
       } catch (error) {
         console.log(error);
       }
     };
     getChatUser();
-  }, [currentChat]);
+  }, [currentChat, loggedInUser.id]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -36,23 +39,10 @@ function Messages({ loggedInUser, currentChat }) {
   }, [messages]);
 
   useEffect(() => {
-    if (currentChat) {
-      arrivalMessage &&
-        currentChat.members.includes(arrivalMessage.sender) &&
-        setMessages((prev) => [...prev, arrivalMessage]);
-    }
-  }, [arrivalMessage, currentChat]);
-
-  useEffect(() => {
-    socket.current.emit("addUser", loggedInUser.id);
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-      });
-    });
-  }, [loggedInUser.id]);
+    arrivalMessage &&
+      currentChat.members.some((c) => c._id === arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat.members]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,7 +54,7 @@ function Messages({ loggedInUser, currentChat }) {
     };
 
     const receiverId = currentChat.members.find(
-      (member) => member !== loggedInUser.id
+      (member) => member._id !== loggedInUser.id
     );
 
     try {
@@ -75,9 +65,9 @@ function Messages({ loggedInUser, currentChat }) {
       console.log(err);
     }
 
-    socket.current.emit("sendMessage", {
+    socket.emit("sendMessage", {
       senderId: loggedInUser.id,
-      receiverId,
+      receiverId: receiverId._id,
       text: newMessage,
     });
   };
@@ -87,7 +77,6 @@ function Messages({ loggedInUser, currentChat }) {
       try {
         if (currentChat) {
           const response = await axios.get(`/api/messages/${currentChat._id}`);
-          console.log(response.data);
           setMessages(response.data);
         }
       } catch (error) {
@@ -96,6 +85,13 @@ function Messages({ loggedInUser, currentChat }) {
     };
     getMessages();
   }, [currentChat]);
+
+  const quitCurrentChat = () => {
+    document.querySelector(".center").style.display = "none";
+    document.querySelector(".left").style.display = "grid";
+    document.querySelector(".container").style.gridTemplateAreas =
+      '"right right right" "left left left"';
+  };
 
   return (
     <>
@@ -107,6 +103,9 @@ function Messages({ loggedInUser, currentChat }) {
           <h3 className="buddy_name">
             {currentChatFriend ? currentChatFriend.name : ""}
           </h3>
+        </div>
+        <div className="close-chat" onClick={quitCurrentChat}>
+          <i className="fas fa-times"></i>
         </div>
       </div>
       <div className="messages">
@@ -135,11 +134,9 @@ function Messages({ loggedInUser, currentChat }) {
           );
         })}
       </div>
-
       <div className="buddy-message">
         <form onSubmit={handleSubmit}>
           <input
-            disabled={!currentChat}
             onChange={(e) => setNewMessage(e.target.value)}
             value={newMessage}
             className="type_message"

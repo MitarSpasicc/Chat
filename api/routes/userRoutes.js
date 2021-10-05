@@ -3,7 +3,6 @@ const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 
 // Get All Users
-
 router.get(
   "/",
   asyncHandler(async (req, res) => {
@@ -13,17 +12,16 @@ router.get(
 );
 
 // Get a User by ID
-
 router.get(
   "/:userId",
   asyncHandler(async (req, res) => {
     const userId = req.params.userId;
-
-    try {
-      const user = await User.findById(userId);
+    const user = await User.findById(userId);
+    if (user) {
       res.status(200).json({ name: user.name, id: user._id });
-    } catch (error) {
-      throw new Error("User does not exist");
+    } else {
+      res.status(400);
+      throw new Error("User doesn't exist");
     }
   })
 );
@@ -32,7 +30,7 @@ router.get(
 router.post(
   "/register",
   asyncHandler(async (req, res) => {
-    const { name, password } = req.body;
+    const { name, password, confirmPassword } = req.body;
     const userExists = await User.findOne({ name });
 
     if (userExists) {
@@ -40,10 +38,13 @@ router.post(
       throw new Error("User already exists");
     }
 
+    if (password !== confirmPassword) {
+      res.status(400);
+      throw new Error("Passwords do not match");
+    }
     const user = await User.create({ name, password });
-
     if (user) {
-      res.status(201).json({ name, msg: "User successfully registered" });
+      res.status(201).json({ name, msg: "successfully registered" });
     } else {
       throw new Error("Invalid user data");
     }
@@ -57,15 +58,18 @@ router.post(
   asyncHandler(async (req, res) => {
     const { name, password } = req.body;
 
-    try {
-      const user = await User.findOne({ name });
-      if (user && password === user.password) {
+    const user = await User.findOne({ name });
+    if (user) {
+      if (password === user.password) {
         const currentUser = { name, id: user._id };
         res.status(200).json(currentUser);
+      } else {
+        res.status(400);
+        throw new Error("Wrong password");
       }
-    } catch (error) {
+    } else {
       res.status(400);
-      throw new Error("Wrong password");
+      throw new Error("User doesn't exist");
     }
   })
 );

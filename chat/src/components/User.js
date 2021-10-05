@@ -1,10 +1,13 @@
 import React from "react";
 import "../styles/user.css";
+import socket from "./socket-client";
 
 function User({ history, activeComponent }) {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const handleLogOut = function () {
     localStorage.clear();
     history.push("/login");
+    socket.emit("logout", userInfo);
   };
   return (
     <>

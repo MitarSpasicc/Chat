@@ -24,26 +24,22 @@ router.post(
       members: [senderId, receiverId],
     });
 
-    try {
-      const savedConversation = await newConversation.save();
-      res.status(200).json(savedConversation);
-    } catch (error) {
-      res.status(500).json(error);
-    }
+    const response = await newConversation.save();
+    res.status(201).json(response);
   })
 );
 
 router.get(
   "/:userId",
   asyncHandler(async (req, res) => {
-    try {
-      const conversation = await Conversation.find({
-        members: { $in: [req.params.userId] },
-      });
+    const conversation = await Conversation.find({
+      members: { $in: [req.params.userId] },
+    }).populate("members");
 
+    if (conversation) {
       res.status(200).json(conversation);
-    } catch (err) {
-      res.status(500).json(err);
+    } else {
+      throw new Error("Conversation doesn't exist");
     }
   })
 );
@@ -51,15 +47,11 @@ router.get(
 router.delete(
   "/:userId",
   asyncHandler(async (req, res) => {
-    try {
-      await Conversation.findOneAndDelete({
-        members: { $in: [req.params.userId] },
-      });
+    const conversation = await Conversation.findOneAndDelete({
+      members: { $in: [req.params.userId] },
+    });
 
-      res.status(200).json("Successfully Deleted!");
-    } catch (err) {
-      res.status(500).json(err);
-    }
+    res.status(200).json(conversation);
   })
 );
 

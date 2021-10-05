@@ -1,56 +1,37 @@
+import React from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 
-function UsersList() {
-  const [users, setUsers] = useState([]);
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+function UsersList({ user }) {
+  const loggedInUser = JSON.parse(localStorage.getItem("userInfo"));
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axios.get("/api/users");
-        setUsers(response.data.filter((user) => user._id !== userInfo.id));
-      } catch (error) {
-        console.log(error);
-      }
+  const addNewConversation = async () => {
+    const newConversation = {
+      senderId: loggedInUser.id,
+      receiverId: user._id,
     };
-    getUsers();
-  }, []);
-
-  const createConversation = async (user) => {
     try {
-      const newConversation = {
-        senderId: userInfo.id,
-        receiverId: user._id,
-      };
-      localStorage.setItem("conversations", JSON.stringify(""));
       await axios.post(`/api/conversation`, newConversation);
     } catch (error) {
       console.log(error);
     }
   };
 
-  return users.map((user) => {
-    return (
-      <div
-        className="conversation"
-        key={user._id}
-        onClick={() => createConversation(user)}
-      >
-        <div className="con-avatar">
-          <div className="img-container-conversation">
-            <i className="fas fa-user-tie"></i>
-          </div>
-        </div>
-        <div className="con-info">
-          <h3 className="con_name">{user ? user.name : ""}</h3>
-        </div>
-        <div className="con-add-friend">
-          <i className="fas fa-user-plus active"></i>
+  return (
+    <div className="conversation" onClick={() => addNewConversation()}>
+      <div className="con-avatar">
+        <div className="img-container-conversation">
+          <i className="fas fa-user-tie"></i>
         </div>
       </div>
-    );
-  });
+      <div className="con-info">
+        <h3 className="con_name">{user ? user.name : ""}</h3>
+        <p className="con_message"></p>
+      </div>
+      <div className="con-about">
+        <i className="fas fa-user-plus"></i>
+      </div>
+    </div>
+  );
 }
 
 export default UsersList;

@@ -1,11 +1,8 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../styles/conversations.css";
 
-function Conversations({ conversation, currentUser }) {
-  const [latestMessage, setLatestMessage] = useState("");
-  const [user, setUser] = useState(null);
-
+function Conversations({ member }) {
   const handleDelete = async (e, id) => {
     try {
       await axios.delete(`/api/conversation/${id}`);
@@ -15,35 +12,6 @@ function Conversations({ conversation, currentUser }) {
     }
   };
 
-  useEffect(() => {
-    if (conversation) {
-      const friendId = conversation.members.find((m) => m !== currentUser.id);
-      const getUser = async () => {
-        try {
-          const res = await axios.get(`/api/users/${friendId}`);
-          setUser(res.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getUser();
-    }
-  }, [conversation]);
-
-  useEffect(() => {
-    if (conversation) {
-      let getLatestMessage = async () => {
-        try {
-          const { data } = await axios.get(`/api/messages/${conversation._id}`);
-          setLatestMessage(data[data.length - 1].text);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getLatestMessage();
-    }
-  }, []);
-
   return (
     <div className="conversation">
       <div className="con-avatar">
@@ -52,15 +20,13 @@ function Conversations({ conversation, currentUser }) {
         </div>
       </div>
       <div className="con-info">
-        <h3 className="con_name">{user ? user.name : ""}</h3>
-        <p className="con_message">
-          {latestMessage ? latestMessage.substr(0, 6) + "..." : ""}
-        </p>
+        <h3 className="con_name">{member ? member.name : ""}</h3>
+        <p className="con_message"></p>
       </div>
       <div className="con-about">
         <i
           className="far fa-trash-alt"
-          onClick={(e) => handleDelete(e, user.id)}
+          onClick={(e) => handleDelete(e, member._id)}
         ></i>
       </div>
     </div>

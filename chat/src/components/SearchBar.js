@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/searchbar.css";
 
-function SearchBar() {
+function SearchBar({ searchUsers, searchConversations, activeComponent }) {
   return (
     <div className="search-wrapper">
       <div className="search-container">
@@ -10,6 +10,9 @@ function SearchBar() {
           name="search"
           className="search"
           placeholder="Search for a friend.."
+          onChange={
+            activeComponent === "users" ? searchUsers : searchConversations
+          }
         />
         <i className="fas fa-search"></i>
       </div>

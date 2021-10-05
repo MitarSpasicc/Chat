@@ -3,7 +3,18 @@
   align-items: center;
   margin-top: 1rem;
   padding-bottom: 0.2rem;
+  justify-content: space-between;
   border-bottom: 1px solid #f6f6f6;
+}
+
+.buddy-name-container {
+  flex: 2;
+}
+
+.close-chat {
+  color: rgb(214, 36, 36);
+  cursor: pointer;
+  display: none;
 }
 
 .fa-user-tie {
@@ -75,34 +86,35 @@
 }
 
 .buddy-message {
-  display: flex;
-  align-items: center;
-  padding: 0 0.5rem;
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-top: #f6f6f6 1px solid;
 }
 
 .buddy-message form {
+  flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
 }
 
 .type_message {
-  width: 100%;
-  padding: 0 12px;
-  text-indent: 25px;
   outline: none;
   border: none;
-  border-radius: 20px;
   font-size: 16px;
+  height: 34px;
+  flex: 2;
 }
 
 .fa-paper-plane {
-  font-size: 15px;
-  color: #fff;
-  background-color: #44d7b6;
-  border-radius: 100%;
-  padding: 12px;
+  font-size: 25px;
+  color: #44d7b6;
   transform: rotate(20deg);
   cursor: pointer;
+}
+
+.isTyping {
+  color: #727272;
+  position: absolute;
+  top: -20px;
 }
